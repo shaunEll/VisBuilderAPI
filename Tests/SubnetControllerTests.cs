@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Xunit;
-using Services;
 
 namespace Tests
 {
@@ -29,9 +28,9 @@ namespace Tests
         {
             Setup();
 
-            var result = sc.Create(subnets[0]);
+            var result = sc.Create(subnets[0].IPAddress,subnets[0].Cidr,subnets[0].Description);
 
-            Assert.IsType<SubnetDTO>(result);
+            Assert.IsType<Subnet>(result);
             Assert.Equal("Base Subnet", result.Description);
         }
 
@@ -40,8 +39,8 @@ namespace Tests
         {
             Setup();
 
-            var result1 = sc.Create(subnets[0]);
-            var result2 = sc.Create(subnets[1]);
+            var result1 = sc.Create(subnets[0].IPAddress, subnets[0].Cidr, subnets[0].Description);
+            var result2 = sc.Create(subnets[1].IPAddress, subnets[1].Cidr, subnets[1].Description);
 
             Assert.Equal("Base Subnet", result1.Description);
             Assert.Equal("First Child", result2.Description);
@@ -52,8 +51,8 @@ namespace Tests
         {
             Setup();
 
-            var result1 = sc.Create(subnets[0]);
-            var result2 = sc.Create(subnets[1]);
+            var result1 = sc.Create(subnets[0].IPAddress, subnets[0].Cidr, subnets[0].Description);
+            var result2 = sc.Create(subnets[1].IPAddress, subnets[1].Cidr, subnets[1].Description);
 
             Assert.True(sc.IsInSubnet(result1, result2));
         }
@@ -63,9 +62,9 @@ namespace Tests
         {
             Setup();
 
-            var result1 = sc.Create(subnets[0]);
-            var result2 = sc.Create(subnets[1]);
-            var result3 = sc.Create(subnets[2]);
+            var result1 = sc.Create(subnets[0].IPAddress, subnets[0].Cidr, subnets[0].Description);
+            var result2 = sc.Create(subnets[1].IPAddress, subnets[1].Cidr, subnets[1].Description);
+            var result3 = sc.Create(subnets[2].IPAddress, subnets[2].Cidr, subnets[2].Description);
 
             Assert.True(sc.IsInSubnet(result1, result3));
             Assert.False(sc.IsInSubnet(result2, result3));

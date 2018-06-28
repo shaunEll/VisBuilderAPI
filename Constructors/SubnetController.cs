@@ -1,10 +1,8 @@
-﻿using Services;
-
-namespace Constructors
+﻿namespace Constructors
 {
     public interface SubnetController
     {
-        SubnetDTO Create(SubnetSourceData ssd);
-        bool IsInSubnet(SubnetDTO stdoSource, SubnetDTO sdtoToTest);
+        Subnet Create(string IPAddress, byte CIDR, string Description = null);
+        bool IsInSubnet(Subnet source, Subnet toTest);
     }
 }

@@ -1,11 +1,11 @@
 ﻿using System;
 using TreeCollections;
 
-namespace Services
+namespace Constructors
 {
     public interface Constructor
     {
         void Build();
-        MutableEntityTreeNode<string, SubnetDTO> Tree { get; }
+        MutableEntityTreeNode<string, Subnet> Tree { get; }
     }
 }

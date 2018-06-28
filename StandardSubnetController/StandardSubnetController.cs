@@ -1,32 +1,16 @@
 ﻿using Constructors;
 using System;
 using System.Net;
-using Services;
 
 namespace SubnetControllers
 {
     public class StandardSubnetController : SubnetController
     {
-        IPNetwork iPNetwork;
-
-        public SubnetDTO Create(SubnetSourceData ssd)
+        public Subnet Create(string IPAddress, byte CIDR, string Description = null)
         {
             try
             {
-                iPNetwork = IPNetwork.Parse(ssd.IPAddress, ssd.Cidr);
-
-                return new SubnetDTO()
-                {
-                    IPAddress = ssd.IPAddress,
-                    Description = ssd.Description,
-                    Network = iPNetwork.Network.ToString(),
-                    Netmask = iPNetwork.Netmask.ToString(),
-                    Broadcast = iPNetwork.Broadcast.ToString(),
-                    Cidr = iPNetwork.Cidr,
-                    Usable = (int)iPNetwork.Usable,
-                    FirstUsableIP = iPNetwork.FirstUsable.ToString(),
-                    LastUsableIP = iPNetwork.LastUsable.ToString()
-                };
+                return createSubnet(IPAddress, IPNetwork.Parse(IPAddress, CIDR), Description);
             }
             catch(Exception ex)
             {
@@ -34,10 +18,26 @@ namespace SubnetControllers
             }
         }
 
-        public bool IsInSubnet(SubnetDTO sdtoSource, SubnetDTO sdtoToTest)
+        Subnet createSubnet(string IPAddress, IPNetwork iPNetwork, string Description)
         {
-            IPNetwork sourceSubnet = IPNetwork.Parse(sdtoSource.IPAddress, sdtoSource.Cidr);
-            IPNetwork testSubnet = IPNetwork.Parse(sdtoToTest.IPAddress, sdtoToTest.Cidr);
+            return new Subnet()
+            {
+                IPAddress = IPAddress,
+                Description = Description,
+                Network = iPNetwork.Network.ToString(),
+                Netmask = iPNetwork.Netmask.ToString(),
+                Broadcast = iPNetwork.Broadcast.ToString(),
+                Cidr = iPNetwork.Cidr,
+                Usable = (int)iPNetwork.Usable,
+                FirstUsableIP = iPNetwork.FirstUsable.ToString(),
+                LastUsableIP = iPNetwork.LastUsable.ToString()
+            };
+        }
+
+        public bool IsInSubnet(Subnet source, Subnet toTest)
+        {
+            IPNetwork sourceSubnet = IPNetwork.Parse(source.IPAddress, source.Cidr);
+            IPNetwork testSubnet = IPNetwork.Parse(toTest.IPAddress, toTest.Cidr);
 
             return sourceSubnet.Contains(testSubnet);
         }
